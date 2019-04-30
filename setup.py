@@ -9,14 +9,14 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='django-softdelete-it',
-    version='0.1',
+    version='0.1.1',
     packages=find_packages(),
     include_package_data=True,
     license='MIT License',
     description='A simple Django app to add soft-delete functionality to\
                  desired models',
     long_description=README,
-    url='https://github.com/exploreshaifali/django-softdelete-it',
+    url='https://github.com/mikomister/django-softdelete-it',
     author='Shaifali Agrawal',
     author_email='agrawalshaifali09@gmail.com',
     classifiers=[

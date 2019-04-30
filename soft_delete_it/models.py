@@ -102,7 +102,7 @@ class SoftDeleteHelper():
             try:
                 if self.delete_type == 'soft_delete':
                     self.sql_model_wise_batch_update(model, instances,
-                                                     deleted=uuid.uuid4())
+                                                     deleted=True)
                 else:
                     self.sql_model_wise_batch_update(model, instances,
                                                      deleted=None)
@@ -125,7 +125,7 @@ class SoftDeleteQuerySet(models.QuerySet):
 
     @transaction.atomic
     def delete(self, using=None):
-        '''setting deleted attribtue to new UUID', also soft-deleting all its
+        '''setting deleted attribtue to True', also soft-deleting all its
         related objects if they are on delete cascade'''
         using = using or "default"
 
@@ -206,7 +206,7 @@ class SoftDeleteModel(models.Model):
     Abstract model that holds:
       1. one attribute:
         deleted - default is False, when object is soft-deleted it is set to
-        new UUID
+        True
 
       2. objects manager which have following methods:
         delete() - to soft delete instance
@@ -219,9 +219,9 @@ class SoftDeleteModel(models.Model):
 
 
     It override default method delete(), that soft-deletes the object by
-    setting deleted to new UUID.
+    setting deleted to True.
     '''
-    deleted = models.UUIDField(default=None, null=True, blank=True)
+    deleted = models.BooleanField(default=None, null=True, blank=True)
 
     objects = SoftDeleteManager()
     all_objects = SoftDeleteManager(deleted_also=True)
@@ -229,7 +229,7 @@ class SoftDeleteModel(models.Model):
     @transaction.atomic
     def delete(self, using=None):
         '''
-        Setting deleted attribtue to new UUID',
+        Setting deleted attribtue to True',
         also if related objects are on delete cascade:
           they will be soft deleted if those related objects have soft deletion
           capability
